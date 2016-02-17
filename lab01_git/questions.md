@@ -1,54 +1,56 @@
 # Warmup Questions
 
 1.  What is the clone url of this repository?
-    >   awsdfgh
+    >   https://github.com/JavierCoronel/lab_vision
 
 2.  What is the output of the ``cal`` command?
 
-        multi
-        line
-        answer
+        The cal command displays a calendar. It has different options
+        to show single or various months, an specific day of other
+        year, or change the first day displayed
 
 # Homework Questions
 
 1.  What is the ``grep``command?
-    >   answer
+    >   grep is used to do a match of a word or sentence in specific files
 
 2.  What is a *makefile*?
     >   answer
 
 4.  What does the ``-prune`` option of ``find`` do? Give an example
-    >   answer
+    >   -prune is used to ignore a directory and the files under it
+        e.g. "find . -path ./misc -prune -o -name '*.txt' -print" exlude the misc directory
+        Example given by Chriss Pratt/stackoverflow.com
 
 5.  Where is the ``grub.cfg``  file
-    >   answer
+    >   Is in boot/grub/
 
 6.  How many files with ``gnu`` in its name are in ``/usr/src``
-    >   answer
+    >   none
 
 7.  How many files contain the word ``gpl`` inside in ``/usr/src``
-    >   answer
+    >   none
 
 8.  What does the ``cut`` command do?
-    >   answer
+    >   Extract selected parts of a file
 
 9.  What does the ``wget`` command do?
-    >   answer
+    >   It is usefull to download files from URL's *
 
 9.  What does the ``rsync`` command do?
-    >   answer
+    >   Transfeer the difference of two files *
 
 10.  What does the ``diff`` command do?
-    >   answer
+    >   Compares the contents of the two files *
 
 10.  What does the ``tail`` command do?
-    >   answer
+    >   Print the last 10 lines of the selected files *
 
 10.  What does the ``tail -f`` command do?
-    >   answer
+    >   if the file is still writing, it show the last lines
 
 10.  What does the ``link`` command do?
-    >   answer
+    >   Create a link named FILE2 to an existing FILE1 *
 
 11.  How many users exist in the course server?
     >   answer
@@ -69,3 +71,5 @@
 17. How many unique images are in the ``sipi_images`` database?
     >   answer
     
+
+* Info from http://linux.about.com/
