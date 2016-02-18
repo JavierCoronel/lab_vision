@@ -53,23 +53,26 @@
     >   Create a link named FILE2 to an existing FILE1 *
 
 11.  How many users exist in the course server?
-    >   answer
-
+    >  30
+ 
 12. What command will produce a table of Users and Shells sorted by shell (tip: using ``cut`` and ``sort``)
-    >   answer
+    >   cut -f1 -d':' /etc/passwd | sort -n | uniq 
+    From stackoverflow.com
 
 13. What command will produce the number of users with shell ``/sbin/nologin`` (tip: using ``grep`` and ``wc``)
-    >   answer
+    >   ps a | awk '{print $2}' | grep -vi "/sbin/nologin" | uniq | wc -l
+    Based on unix.stackexchange.com/
 
 15. Create a script for finding duplicate images based on their content (tip: hash or checksum)
     You may look in the internet for ideas, but please indicate the source of any code you use
     Save this script as ``find_duplicates.sh`` in this directory and commit your changes to github
 
 16. What is the meaning of ``#! /bin/bash`` at the start of scripts?
-    >   answer
+    >   It's a convention so the *nix shell knows what kind of interpreter to run
+    Obtained from stackoverflow.com
 
 17. How many unique images are in the ``sipi_images`` database?
     >   answer
     
 
-* Info from http://linux.about.com/
+    * Info from http://linux.about.com/
