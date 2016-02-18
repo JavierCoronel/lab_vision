@@ -15,7 +15,7 @@
     >   grep is used to do a match of a word or sentence in specific files
 
 2.  What is a *makefile*?
-    >   answer
+    >   Describes the relationships among files in your program, and the states the commands for updating each file *
 
 4.  What does the ``-prune`` option of ``find`` do? Give an example
     >   -prune is used to ignore a directory and the files under it
@@ -68,11 +68,11 @@
     Save this script as ``find_duplicates.sh`` in this directory and commit your changes to github
 
 16. What is the meaning of ``#! /bin/bash`` at the start of scripts?
-    >   It's a convention so the *nix shell knows what kind of interpreter to run
+    >   It's a convention to know what kind of interpreter to run
     Obtained from stackoverflow.com
 
 17. How many unique images are in the ``sipi_images`` database?
     >   answer
     
 
-    * Info from http://linux.about.com/
+    "*" Info from http://linux.about.com/
