@@ -1,0 +1,138 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Laboratory 5: Berkeley Segmentation Dataset and Benchmarks 500 (BSDS500)}
+
+\author{Javier Coronel\\
+Universidad de los Andes\\
+Biomedical Engineering\\
+{\tt\small jd.coronel30@uniandes.edu.co}
+\and
+Luis Carlos Rivera \\
+Universidad de los Andes\\
+Biomedical Engineering\\
+{\tt\small lc.rivera10@uniandes.edu.co}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+Segmentation is one of the main areas of computer vision, the principal objective  is to obtain from an original image, each object represented as one area. Nowadays there are different approaches to solve this problem and each method have pros and cons, but there is no perfect approach for the problem. In this case, an implementation of a segmentation function was done using different methods and color space representations. The methods used for segmentation were k-means, watersheds, hierarchical and GMM. The function was used in the BSDS500 and to select the best algorithms and color space representation, different configurations of the function were developed in the training dataset. After a qualitative approach, lab color space, k-means and hierarchical segmentation were selected to run over the test dataset. The k-means algorithm produces an ODS of 0.52 and hierarchical segmentation an ODS of 0.62, suggesting a best performance for hierarchical segmentation.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+The segmentation of images is a widely studied problem \cite{brice,rouss3}, it consist in grouping and partitioning the image in multiple segments. By doing the segmentation, it is expected to obtain a more meaningful image \cite{shapiro}. In the present laboratory there will be analyzed the results of the created function that implements different clustering methods such as K-means, Watershed, Hierarchical, GMM (Gaussian Mixture Models). The function is evaluated on the Berkeley Segmentation Dataset and Benchmarks 500 (BSDS).
+\section{Segmentation Methods}
+The implemented function uses four distinct methods: K-means, Watershed, Hierarchical, GMM (Gaussian Mixture Models). It also consider the feature space of representation for the segmentation, these are rgb, lab and hsv. For the representation, it also has the option of considering spatial information of the input images in their respective color space.\\
+\\
+\textbf{K-means}\\
+\indent K-means is a clustering method for data distribution. It models the probability density as a superposition of spherically symmetric distributions. The algorithm receives the data and the number of clusters 'k' to find, then, iteratively updates the centroids (cluster center) based on the surrounding data \cite{szeliski}. Finally, until a convergence is reached, the resulting centroids generate the data distribution.\\
+\\
+\textbf{Watersheds}\\
+\indent One way to interpret the watershed algorithm is to start flooding the image from the local minima (assuming the image like a landscape) and labeling where different regions meet\cite{szeliski}. The general algorithm uses the gradient magnitude of a gray-level image, and based in the local minima start the segmentation. In this case, watershed algorithm was implemented using \textit{h-minima}. This way, the imposed minima in the gradient were not local but hierarchical.\\
+\\
+\textbf{GMM}\\
+\indent The Gaussian Mixture Model is a soft clustering method, this means that, for each point, it assigns a probability of belonging to cluster. The goal of the GMM is to identify the correct parameters to explain the data  as Gaussian distributions. Like \textit{k-means} algorithm, it needs to specify the number of clusters.\\
+\\
+\textbf{Hierarchical}\\
+\indent The hierarchical segmentation uses perceptual features, the more general used is homogeneity in color tone. At the initial state, the algorithm start with an over segmentation where every single pixel represent a region but this clustering method have the characteristic of leveling up, each level is defined as a distance where now, the new regions are redefined by the perceptual parameter. As the algorithms scales up it reaches a critical point where the segmented areas are well defined, but any value over it is over-segmentation and under is over-segmentation. The disadvantage of this method it's the computational resources that it takes for big images and big datasets like BSDS500 \cite{hierarchical}.\\
+\\
+\textbf{Selected method}\\
+\indent To select the best algorithm, each model was implemented in the training dataset using different configurations for the parameters. Then, based in image results (Fig. 1), the best configuration of parameters and methods were selected. The final selected algorithms were k-means and hierarchical segmentation with the lab color representation. This two methods presented the best behavior over the training set (computational time, memory requirements, visual results).\\
+\indent As mentioned above, there were several specifications to select the color space for the segmentation. The selected color space representation was lab. This, because in the training set, this color space was the one that represented different regions in each image in the best way.\\
+
+\section{Methodology}
+To test the general performance of the function, we used the BSDS500 dataset to determinate which of the cluster methods worked best or worst.
+The reason of using BSDS500 Dataset is because:
+\begin{itemize}
+\item It uses natural images.
+\item It implemented human annotations over each image.
+\item It allowed a quantitative evaluation over the final segmentation work.
+\end{itemize}
+\indent The dataset is composed by 500 images, separated in three different categories: training, test and validation, each one of this with 200, 200 and 100 images respectively. Is important to clarify that BSDS500 uses BSDS300 as training. All the images where in RGB but with different size. The total weight of the dataset including benchmark codes is 251 Mb.
+As mentioned before one of the main reasons for using this dataset was the annotations made by humans, this annotations are represented in the folder of groundtruth. Each of the files in the folder represent one image with the same name, the difference is that in the groundtruth each pixel has been marked with a number to represent the region of origin.\\
+\indent The main idea of the benchmarks is to make a binary classification (boundary/not boundary pixel). Also it evaluates the quality of the segments, the previous criteria have been evaluating using 3 different approaches, the first one denominated \textit{Variation of Information} which evaluates the distance from a segment obtained from the clustering Vs the groundtruth region. The second \textit{rand Index} which gives the probability of getting a random index pixel in the segmentation compared with the groundtruth. Finally the \textit{Segmentation Covering} which gives an approximate measure of how well the machine segmentation can explain the human segmentation.
+\section{Results}
+Over the training dataset, the function produced different results for the different algorithms using lab colorspace. The results are reported in figure 1. There, it can be seen that, despite over segmentation in various algorithms (e.g. watersheds), the lab color space is useful for segmentation in k-means and hierarchical segmentation.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{trainresults}
+\caption{Results over three different images on training dataset. Top left: Original, Top center: Groundtruth, Top right: K-means, Bottom left: Watersheds, Bottom center: Hierarchical, Bottom right: GMM}
+\centering
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.215]{testresults}
+\caption{Example of results over test dataset after selecting the algorithms. First: Original, Second: Groundtruth, Third: K-means, Fourth: Hierarchical}
+\centering
+\end{figure}
+One of the most accurate results of k-means and hierarchical segmentation in the test BSDS500 are reported in figure 2. There is evident that there is a difference between groundtruth and  segmentation, but in general the main regions are well divided. Is noticeable, that the contours of the segmentation presents distortion and noise. This result in a displacement of the boundary and may have significance in the quantitative results of each algorithm.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{k_means}
+\caption{This plot presents Precision-Recall for K-means algorithm}
+\centering
+\end{figure}\\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{hierarchical}
+\caption{This plot presents Precision-Recall for Hierarchical algorithm}
+\centering
+\end{figure}
+In figures 3 and 4 are the Precision-Recall curves. It can be seen that, for both methods the behavior is similar, following an almost linear decay. For the K-means PR curve, at the begining is a low value, indicating a big number of false detection. But then, its behavior normalizes. The PR curve for hierarchical segmentation reaches a better performance with a more linear decay.
+\section{Discussion}
+First of all, one color space is not better than any other, it only depends on the purpose of the algorithm. In this case, the lab color space representation gave better results than the others. As specific advantage, this color space allow the algorithm set a real difference between color tones in each region.\\
+\indent As relevant note, we determine that GMM was a good method for clustering; but it was a disadvantage related with higher number of clusters. It requested excessive memory and more computational power as the number of clusters increases. So, in a great variety of images it didn't work and the method was declassified.\\
+\indent Comparing the Optimal Dataset Scale (ODS) and the of the algorithms (table 1), we can infer that hierarchical segmentation has a better performance. The difference between the selected algorithms lies in the initialization.\\
+\indent The limitations of using k-means is that is necessary know the number of clusters. With the \textit{k} clusters, the first centroids are generated randomly. This may result in different segmentations in different runs of the algorithm. Because of this, k-means does not give a general solution for all the images, in some images works really well with a great recall identifying all the segments but no with a great precision. This is specially clear in the cases in which the number of clusters in the image is bigger than the segmented regions in the groundtruth. Also is important that when the generated clusters in the featured space representation is not spherical, k-means has no good performance according to its euclidean distance.\\
+\indent For hierarchical segmentation, this method has no random initialization, it produces more consistent results and is more repeatability than k-means over all the dataset. Because of this, is recommended to use Hierarchical segmentation.
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Method} & \textbf{ODS} & \textbf{OIS}\\
+\hline
+Hierarchical & 0.62 & 0.64\\
+\hline
+K-means & 0.52 & 0.54\\
+\hline
+\end{tabular}
+\caption{\label{tab:table-name} Segmentation results over BSDS500.}
+\end{table}
+\section{Future Work}
+To improve the result of the segmentation, is recommended a more exhaustive work in the selection of the algorithm. Not only selecting a limited number of images, but also because identifying categories in which the algorithm gives better results or worst. For example identifying geometrical figures versus numbers, some methods could work better for one category than for the other. This because there it's not a single method to segment everything. It also could be interesting to identify quantitatively how exactly differ the performance in training for the methods that require an input such as numbers of clusters, distance between roots and methods without any input.
+
+%-------------------------------------------------------------------------
+{\small
+\bibliographystyle{ieee}
+\bibliography{egbib.bib}
+}
+
+\end{document}
