@@ -1,0 +1,153 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[]{mcode}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Laboratory 8: PHOW Classification}
+
+\author{Javier Coronel\\
+Universidad de los Andes\\
+Biomedical Engineering\\
+{\tt\small jd.coronel30@uniandes.edu.co}
+\and
+Luis Carlos Rivera \\
+Universidad de los Andes\\
+Biomedical Engineering\\
+{\tt\small lc.rivera10@uniandes.edu.co}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+PHOW classification also know as Pyramid Histogram Of Visual Words is a methodology of deep learning techniques based on the bag of words model. In this models, a feature is treated like a word, and the main idea is to classify an image based on the frequency of the presented features which fits the best to the features of a certain category. In the following report will be analyzed the performance of this methodology over the ImageNet Dataset. The results was as expected, as the number of categories increases, the computational model required to create the SVM multi-class model was bigger and the average classification accuracy decreased very fast.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+
+Pyramid Histogram of Visual Words (PHOW) is a classification model witch use features presented in an image as words that may represent the image content. This methodology was first implemented in text understanding, the features will be represented in a sparse vector associated with the frequency of each of the features. The main issue with this methodology is the lost of spatial information associated with the original image, in general the model know that there is a feature somewhere in the image and the number of times witch that feature appears over the image \cite{khaligh2014you}.
+
+To analyze the behavior of this methodology over a big and diverse dataset the ImageNet dataset will be used . This datasset is composed of $996$ different categories, for each of the categories we count with training data and test data, the number of images is equal for each category and all categories have 100 images in the training set and 100 images in test set. All the images are in RGB and for spatial normalization over the dataset all the images had been re-sized by default to 256X256 pixels.
+
+The main idea of the present report is to analyze the performance of this methodology over a big dataset of images that have many different categories. To identify how the algorithm behaves, as the number of categories increases, the computational time required and the average accuracy from each model in training and testing set will be inspected..
+
+\section{Methodology}
+For this laboratory we used the vl-library witch is open source,this library has tools specialized for image understanding, local features and matching \cite{vedaldi2010vlfeat}. They tested several of their algorithms on different datsets, but for this specific case we implemented their test of PHOW in caltech-101 in a different dataset with more categories like is ImageNet. The changes made over the algorithm to work in this dataset and analyze the performance were the following:
+
+\begin{itemize}
+\item The number of categories, for this specific case will be the same number of categories of training and testing. We implemented the code to iterate the number of categories increasing each step by 10 categories until 240 and 120 categories are reached for training and test respectively.
+\item The number of clusters in k-means classification of the features,  this number increased in order to get a better classification of the features. This because of the big amount of categories, and some of this may not differ so easily if there were a reduced number of descriptive features. 
+\item Images included in training, the number of images of training taken into account to make the learning model. It was changed to identify its effects on the accuracy classification performance. The variations were identified over a classifier of 50 classes and the number of images selected were increasing in 5 each time.
+\item Number of spatial partitions, the number of spatial partitions of the image to obtain the histograms and the feature representation, changed to identify its effects on the accuracy classification performance. This effects were identified by setting the spatial partitions in 2 and increasing until 10 in the same previous classifier of 50 classes.
+\item In the phow-caltech-101code, they find and used all the images in .jpg format. In ImageNet the images are in .JPEG format, so it was necessary to change the file format searched by the code.
+\end{itemize}
+
+\section{Results}
+\subsection{Training}
+In figure \ref{traininacc} is presented the average classification accuracy over ImageNet dataset as the the number of categories increases.
+In figure \ref{trainintime} we present the computational time required to create the SVM multi-class model as the number of categories increases.
+\begin{figure}[h]
+\centering
+\includegraphics[trim=0.8cm 0cm 0cm 0,clip=true,scale=0.6]{accutrain}
+\caption{Accuracy variation depending on number of categories included.}
+\label{traininacc}
+\centering
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[trim=0.6cm 0cm 0cm 0,clip=true, scale=0.6]{timetrain}
+\caption{Time variation depending on number of categories included.}
+\label{trainintime}
+\centering
+\end{figure}
+
+In figure \ref{spatialparts} is represented the accuracy variation depending on the spatial partitions of the image on a 50 classes classifier, the spatial partitions in X and Y are the same.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{spatialPartitions}
+\caption{Accuracy variation depending on spatial partitions.}
+\label{spatialparts}
+\centering
+\end{figure}
+
+In figure \ref{trainnum} is represented the accuracy variation depending on the number of images included for training. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.62]{trainingNum}
+\caption{Accuracy variation depending on number of images included on training.}
+\label{trainnum}
+\centering
+\end{figure}
+
+\subsection{Testing}
+The performance over the testing set was evaluated using the same number of categories trained in the previous section. We also evaluated the average classification accuracy and the time required to predict the labels as the number of categories increases.
+The  Figure \ref{testtime} represents the behavior of time as the number of categories increases in the model. It is important to mention that we tested the model over all the categories presented in the model.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.62]{timetest}
+\caption{Time variation depending on number of images included on test.}
+\label{testtime}
+\centering
+\end{figure}
+The Figure \ref{testaccu} presents the accuracy of the method as the number of categories increases.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.62]{accutest}
+\caption{Accuracy variation depending on number of images included on test.}
+\label{testaccu}
+\centering
+\end{figure}
+\section{Discussion}
+In Figure \ref{trainintime} it is noticeable a linear behavior of the required time to made the classification, it means that, the more classes are included for classification, the greater is the required time to classify.
+
+In a similar way, Figure \ref{traininacc} shows that for a larger number of classes, the average classification decreases exponentially.
+
+Regarding to the number of training images included for the model, it is noticeable that there is an improvement in the classification accuracy. And this is reasonable because a wider description of the classes is reached when there is more images to learn from. Thus, Figure \ref{trainnum} shows an improvement of almost 7\% in the training set, despite of this it is important to have in mind that include a larger number of images could result in overfitting for the model.
+
+On the other hand, for the spatial partitioning of the images the Figure \ref{spatialparts} shows an improvement of almost 1.5\% but the behavior of the change seem to don't have a significant effect over the classification accuracy.
+
+For the test, in figures \ref{testtime} and \ref{testaccu} is shown a similar behavior as the training, where a exponential decay is in the accuracy and a linear behavior in the required time as the number of classes increases.
+
+In general terms, with this method it is evident a lack of accuracy for the classification. This might show the problems of migration of methods in different datasets. Making really hard to identify at which point the model is overfitting or underfitting for a given amount of images and categories.
+\section{Future Work}
+A future improvement over this dataset could be not to train in order the categories but to identify witch of the categories have more confusion and train binary SVM with that categories,kind of bootstrapping but with the categories with the highest rate of confusion.\\
+Another way to improve this results based on the computational time required by the training could be to determinate if the number of pictures of category are more than the needed, enough or less, because as the number of categories increased the computational time required increased also exponential as saw in the results section figure \ref{testtime}. Another way to try to improve this method is using binary SVM which will create a model for each pair (or less categories per model) of categories and in the end will set the label to the predicted label with highest score.
+
+
+%-------------------------------------------------------------------------
+{\small
+\bibliographystyle{ieee}
+\bibliography{egbib.bib}
+}
+
+\end{document}
