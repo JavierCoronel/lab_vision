@@ -7,8 +7,8 @@ imdb.images.set(1,val_index)=2;
 
 net=load('textures_jitter.mat');
 
-results_train = train_net(net,imdb.images.data(:,:,1:2));
-results_train_anot = imdb.images.label(1:2) ;
+results_train = train_net(net,imdb.images.data);
+results_train_anot = imdb.images.label ;
 
 save('results_train_anot');
 save('results_train');
