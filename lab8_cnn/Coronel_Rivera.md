@@ -22,14 +22,10 @@ We evaluated the trained network using our function _test net.m_ which have the 
 ```
 Based on the output (label_vector) we constructed the confusion matrix for all the 25 different categories in each of the divisions of the dataset.
 ### 2.1 Performance in Training
-![training](/training.png)
+![Results](/lab8_cnn/Confmat.PNG)
 
-The Accuracy of the network in Training was:
-### 2.2 Performance in Testing
-![testinng](/testing.png)
-
-The Accuracy of the network in Training was:
-
+The Accuracy of the network in Training was: 0.96%
 ## 3. Conclusion
 
 One of the downs in this methodology is the time, because deeper networks learn better, and can be tuuned to generate much better accuracy models. But was interesting to have a limit time to get the best architecture idea that probably could be imported to bigger ones and coul lead to generate even better results that ones that dont take into consideration time.
+The presented result show big confussion and it's because the classification
